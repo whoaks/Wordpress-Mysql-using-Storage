@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+  labels: 
+    dc: winterfell
+    env: north
+
+spec:
+  containers:
+  - name: "con"
+    image: "vimal13/apache-webserver-php"
+    volumeMounts:
+    - name: pod-vol
+      mountPath: /var/www/html
+  volumes:
+  - name: pod-vol
+    persistentVolumeClaim:
+      claimName: mypodpvc

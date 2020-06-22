@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: wprs2
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      dc: winterfell
+      env: north
+  template:
+    metadata:
+      name: mywp
+      labels:
+        dc: winterfell
+        env: north
+    spec:
+      containers:
+      - name: "wpcon"
+        image: "wordpress:4.8-apache"
+        volumeMounts:
+        - name: vol
+          mountPath: /var/www/html
+      volumes:
+      - name: vol
+        persistentVolumeClaim:
+          claimName: wppvc

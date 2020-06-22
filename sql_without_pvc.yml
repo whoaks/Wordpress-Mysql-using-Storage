@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mysql
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      dc: winterfell
+      env: north
+  template:
+    metadata:
+      name: mysql
+      labels:
+        dc: winterfell
+        env: north
+    spec:
+      containers:
+      - name: "mysqlcon"
+        image: "mysql:5.6"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef: 
+              name: mysecret 
+              key: root_password
+        - name: MYSQL_DATABASE
+          value: userinfo
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef: 
+              name: mysecret 
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef: 
+              name: mysecret 
+              key: user_password
+
+
+
+
+
